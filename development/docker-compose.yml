@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  nodeapi:
+    container_name: nodejs-api
+    build: ./local
+    ports:
+      - 9999:9999
+    working_dir: /root/app
+    volumes:
+      - . : /root/app:cached

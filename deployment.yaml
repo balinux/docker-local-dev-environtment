@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: nodegen-service
+spec:
+  selector:
+    app: nodegen
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodegen
+  labels:
+    app: nodegen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodegen
+  template:
+    metadata:
+      labels:
+        app: nodegen
+    spec:
+      imagePullSecrets:
+      - name: pipeline-docker-registry
+      containers:
+      - name: nodegen-app
+        image: node:9-slim
+        ports:
+        - containerPort: 8000

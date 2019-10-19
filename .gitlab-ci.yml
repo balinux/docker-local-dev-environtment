@@ -1,0 +1,31 @@
+image: docker
+
+services:
+  - docker:dind
+
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  only:
+    - dev
+    - master
+  script:
+    - echo run tests in this section
+
+step-deploy-prod:
+  stage: deploy
+  only:
+    - master
+  script:
+    - sudo apt-get install -y python-pip
+    - pip install --upgrade setuptools
+    - pip install docker-compose
+    - docker image prune -f
+    - docker-compose build --no-cache
+    - docker-compose up -d
+  environment: master
+  when: manual
+  

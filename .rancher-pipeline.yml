@@ -1,0 +1,16 @@
+stages:
+- name: build
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: build007
+- name: deploy
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
+    env:
+      CICD_EXECUTION_SEQUENCE: 9-slim
+      CICD_IMAGE: node
+timeout: 60
+notification: {}
